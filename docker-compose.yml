@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    hostname: api
+    restart: always
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    environment:
+      TYPEORM_HOST: postgres
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    hostname: postgres
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      PGPORT: 5432
+      POSTGRES_DB: market_lab_test
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - ./.docker-compose/postgresql/data/:/var/lib/postgresql/data/
